@@ -23,7 +23,8 @@ jobs:
         with:
           flutter-version: "2.10.0"
           channel: "stable"
-        run: flutter --version
+        run: |
+          flutter --version
 
       - name: Install dependencies
         run: |
