@@ -1,0 +1,33 @@
+name: Build and deploy APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+
+      - name: Build APK
+        run: |
+          bundle exec fastlane build_android
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
