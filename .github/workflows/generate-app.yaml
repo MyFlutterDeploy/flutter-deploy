@@ -35,25 +35,10 @@ jobs:
       - name: Build APK
         run: |
           flutter build appbundle --release
-
-#      - name: Setup Fastlane
-#        uses: fastlane/fastlane-action@v2
-#        with:
-#          version: '2.185.1'
-      
-#      - name: Build Android
-#        run: fastlane build_android
-
-#      - name: Upload APK
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app-release.aab
-#          path: build/app/outputs/bundle/release/app-release.aab
-        - name: Generate Release
-          uses: ncipollo/release-action@v1
-          with:
-            artifacts: "build/app/outputs/bundle/release/*"
-            tag: v${{ github.run_number }}
-            token: ${{ secrets.TOKEN }}
-
-
+ 
+      - name: Generate Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/bundle/release/*"
+          tag: v${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
