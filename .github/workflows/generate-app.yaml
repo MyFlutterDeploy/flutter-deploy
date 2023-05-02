@@ -44,8 +44,16 @@ jobs:
 #      - name: Build Android
 #        run: fastlane build_android
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release.aab
-          path: build/app/outputs/bundle/release/app-release.aab
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: app-release.aab
+#          path: build/app/outputs/bundle/release/app-release.aab
+        - name: Generate Release
+          uses: ncipollo/release-action@v1
+          with:
+            artifacts: "build/app/outputs/bundle/release/*"
+            tag: v${{ github.run_number }}
+            token: ${{ secrets.TOKEN }}
+
+
