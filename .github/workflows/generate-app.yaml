@@ -32,13 +32,22 @@ jobs:
         run: |
           flutter pub get
 
-      - name: Build APK
-        run: |
-          flutter build appbundle
+      # - name: Build APK
+      #   run: |
+      #     flutter build appbundle
 
-      - name: Generate Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/bundle/release/*"
-          tag: v${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
+      # - name: Generate Release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/bundle/release/*"
+      #     tag: v${{ github.run_number }}
+      #     token: ${{ secrets.TOKEN }}
+
+      - name: Set up Ruby environment
+        uses: ruby/setup-ruby@v1
+
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Build APK
+        run: fastlane android build
