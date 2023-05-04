@@ -59,13 +59,13 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: release-aab
-          path: build/app/outputs/bundle/release/app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab,build/app/outputs/apk/release/app-release.apk
           # path: build/app/outputs/apk/release/app-release.apk
 
       - name: Generate Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/bundle/release/*"
+          artifacts: "build/app/outputs/bundle/release/*,build/app/outputs/apk/release/*"
           tag: v${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
 
