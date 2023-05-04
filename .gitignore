@@ -44,3 +44,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ignore Android keys
+key.jks
+key.properties
+service_account_key.json
+android_keys.zip
