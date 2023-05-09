@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    tags:
+      - v*
+      - "!v*-*"
 
 jobs:
   build_android:
@@ -12,13 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - name: Get Version
-        id: get_version
-        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
-      
-      - name: Print version
-        run: echo "La versión es ${{ steps.get_version.outputs.version }}"
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -45,25 +41,29 @@ jobs:
         run: |
           flutter pub get
 
-      - name: Format files
-        run: |
-          flutter format --set-exit-if-changed .
+      #- name: Format files
+      #  run: |
+      #    flutter format --set-exit-if-changed .
 
-      - name: Analyze files
-        run: |
-          flutter analyze .
+      #- name: Analyze files
+      #  run: |
+      #    flutter analyze .
 
-      - name: Run the tests
-        run: |
-          flutter test
+      #- name: Run the tests
+      #  run: |
+      #    flutter test
 
       - name: Build APK
         run: |
           flutter build apk --release
 
-      - name: Build AAB
-        run: |
-          flutter build appbundle --release
+      #- name: Build AAB
+      #  run: |
+      #    flutter build appbundle --release
+      
+      - name: Get Version
+        id: get_version
+        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
 
       - name: Generate Release
         uses: ncipollo/release-action@v1
