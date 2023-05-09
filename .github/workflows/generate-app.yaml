@@ -19,3 +19,55 @@ jobs:
       
       - name: Print version
         run: echo "La versión es ${{ steps.get_version.outputs.version }}"
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11"
+
+      - name: Update KeyStore password in gradle properties
+        run: sed -i 's/#{SIGNING_STORE_PASSWORD}#/${{ secrets.SIGNING_STORE_PASSWORD }}/g' android/key.properties
+
+      - name: Update KeyStore key password in gradle properties
+        run: sed -i 's/#{SIGNING_KEY_PASSWORD}#/${{ secrets.SIGNING_KEY_PASSWORD }}/g' android/key.properties
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "2.10.0"
+          channel: "stable"
+
+      - name: Version flutter
+        run: |
+          flutter --version
+
+      - name: Install Flutter dependencies
+        run: |
+          flutter pub get
+
+      - name: Format files
+        run: |
+          flutter format --set-exit-if-changed .
+
+      - name: Analyze files
+        run: |
+          flutter analyze .
+
+      - name: Run the tests
+        run: |
+          flutter test
+
+      - name: Build APK
+        run: |
+          flutter build apk --release
+
+      - name: Build AAB
+        run: |
+          flutter build appbundle --release
+
+      - name: Generate Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/bundle/release/*,build/app/outputs/apk/release/*"
+          tag: v${{ steps.get_version.outputs.version }}
+          token: ${{ secrets.TOKEN }}
