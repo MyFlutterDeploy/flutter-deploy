@@ -3,10 +3,7 @@ name: Build and deploy in Play Store
 on:
   push:
     branches:
-      - develop
-    tags:
-      - v*
-      - "!v*-*"
+      - main
 
 jobs:
   build_android:
