@@ -39,7 +39,7 @@ jobs:
           flutter build apk -t "lib/main.dart" --release
           
       - name: Add label success
-        if: success()
+        if: ${{ success() }}
         uses: actions/github-script@v6
         with:
           script: |
@@ -51,7 +51,7 @@ jobs:
             })
 
       - name: Add label failure
-        if: failure()
+        if: ${{ failure() }}
         uses: actions/github-script@v6
         with:
           script: |
