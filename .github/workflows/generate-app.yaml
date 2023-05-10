@@ -13,8 +13,32 @@ jobs:
         id: get_version
         run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
 
-  build:
+  test:
     needs: [ version ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "2.10.0"
+          channel: "stable"
+          
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "2.10.0"
+          channel: "stable"
+      
+      - name: Format files
+        run: |
+          flutter format --set-exit-if-changed .
+      
+      - name: Analyze files
+        run: |
+          flutter analyze .
+    
+  build:
+    needs: [ version, test ]
     runs-on: ubuntu-latest
 
     steps:
@@ -32,31 +56,9 @@ jobs:
       - name: Update KeyStore key password in gradle properties
         run: sed -i 's/#{SIGNING_KEY_PASSWORD}#/${{ secrets.SIGNING_KEY_PASSWORD }}/g' android/key.properties
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "2.10.0"
-          channel: "stable"
-
-      - name: Version flutter
-        run: |
-          flutter --version
-
       - name: Install Flutter dependencies
         run: |
           flutter pub get
-
-      #- name: Format files
-      #  run: |
-      #    flutter format --set-exit-if-changed .
-
-      #- name: Analyze files
-      #  run: |
-      #    flutter analyze .
-
-      #- name: Run the tests
-      #  run: |
-      #    flutter test
 
       - name: Build APK
         run: |
