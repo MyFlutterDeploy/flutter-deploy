@@ -67,7 +67,7 @@ jobs:
         id: get_version
         run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
 
-      - name: Generate Release
+      - name: Generate Release A
         if: startsWith(github.ref, 'refs/heads/main')
         uses: ncipollo/release-action@v1
         with:
