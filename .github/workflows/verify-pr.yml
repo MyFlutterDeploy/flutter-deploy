@@ -42,6 +42,7 @@ jobs:
         if: ${{ success() }}
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.TOKEN }}
           script: |
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
@@ -54,6 +55,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.TOKEN }}
           script: |
             github.rest.issues.addLabels({
               issue_number: context.issue.number,
