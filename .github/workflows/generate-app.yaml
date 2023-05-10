@@ -6,7 +6,15 @@ on:
       - main
 
 jobs:
-  build_android:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Version
+        id: get_version
+        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
+
+  build:
+    needs: [ version ]
     runs-on: ubuntu-latest
 
     steps:
@@ -59,10 +67,6 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/apk/release/app-release.apk
-      
-      - name: Get Version
-        id: get_version
-        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
 
       - name: Generate Release
         uses: ncipollo/release-action@v1
