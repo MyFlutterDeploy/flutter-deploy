@@ -21,8 +21,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
-      - name: Update in gradle properties
+      - name: Update env cliente secret
         run: |
           sed -i 's/#{GOOGLE_PRIVATE_KEY_ID}#/${{ secrets.GOOGLE_PRIVATE_KEY_ID }}/g' android/app/client_secret.json
           sed -i 's/#{GOOGLE_PRIVATE_KEY}#/${{ secrets.GOOGLE_PRIVATE_KEY }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_CLIENT_EMAIL}#/${{ secrets.GOOGLE_CLIENT_EMAIL }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_CLIENT_ID}#/${{ secrets.GOOGLE_CLIENT_ID }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_CERT_URL}#/${{ secrets.GOOGLE_CERT_URL }}/g' android/app/client_secret.json
         
