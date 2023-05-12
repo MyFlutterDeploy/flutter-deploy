@@ -20,6 +20,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Verificar varios runs
+        run: |
+          echo "hola mundo"
+          echo "hello world"
 
       - name: Setup Java
         uses: actions/setup-java@v1
