@@ -24,7 +24,7 @@ jobs:
       - name: Verificar varios runs
         run: |
           echo "hola mundo"
-          echo "hello world"
+          echo "hello world 2"
 
       - name: Setup Java
         uses: actions/setup-java@v1
