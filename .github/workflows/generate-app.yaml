@@ -55,11 +55,10 @@ jobs:
         run: |
           flutter analyze .
 
-      - name: Update KeyStore password in gradle properties
-        run: sed -i 's/#{SIGNING_STORE_PASSWORD}#/${{ secrets.SIGNING_STORE_PASSWORD }}/g' android/key.properties
-
-      - name: Update KeyStore key password in gradle properties
-        run: sed -i 's/#{SIGNING_KEY_PASSWORD}#/${{ secrets.SIGNING_KEY_PASSWORD }}/g' android/key.properties
+      - name: Update in gradle properties
+        run: |
+          sed -i 's/#{SIGNING_STORE_PASSWORD}#/${{ secrets.SIGNING_STORE_PASSWORD }}/g' android/key.properties
+          sed -i 's/#{SIGNING_KEY_PASSWORD}#/${{ secrets.SIGNING_KEY_PASSWORD }}/g' android/key.properties
 
       - name: Build APK
         run: |
