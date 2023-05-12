@@ -6,15 +6,7 @@ on:
       - main
 
 jobs:
-  version:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Version
-        id: get_version
-        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT      
-
   build:
-    needs: [ version ]
     runs-on: ubuntu-latest
 
     steps:
