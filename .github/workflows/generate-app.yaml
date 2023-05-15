@@ -12,11 +12,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Instalar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.16.0'
       
       - name: Ejecutar script de shell
         run: |
-          chmod +x ./.github/scripts/replace_env.sh
-          sh ./.github/scripts/replace_env.sh
+          node ./.github/scripts/replace_env2.js
         
       #- name: Update env cliente secret
       #  run: |
