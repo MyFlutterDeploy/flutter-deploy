@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Ejecutar script de shell
-        run: ./.github/scripts/replace_env.sh
+        run: |
+          chmod +x ./.github/scripts/replace_env.sh
+          sh ./.github/scripts/replace_env.sh
         
       #- name: Update env cliente secret
       #  run: |
