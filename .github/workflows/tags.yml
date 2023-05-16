@@ -1,0 +1,33 @@
+name: CD - Android
+
+on:
+  push:
+    tags:
+      - v*
+      - "!v*-*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Update env cliente secret
+        run: |
+          sed -i 's/#{GOOGLE_PRIVATE_KEY_ID}#/${{ secrets.GOOGLE_PRIVATE_KEY_ID }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_PRIVATE_KEY}#/${{ secrets.GOOGLE_PRIVATE_KEY }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_CLIENT_EMAIL}#/${{ secrets.GOOGLE_CLIENT_EMAIL }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_CLIENT_ID}#/${{ secrets.GOOGLE_CLIENT_ID }}/g' android/app/client_secret.json
+          sed -i 's/#{GOOGLE_CERT_URL}#/${{ secrets.GOOGLE_CERT_URL }}/g' android/app/client_secret.json
+
+      - name: Run Fastlane
+        uses: maierj/fastlane-action@v3.0.0
+        with:
+          lane: playstore
+          subdirectory: android
