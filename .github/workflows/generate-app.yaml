@@ -1,4 +1,4 @@
-name: Build and deploy in Play Store
+name: CI - Android
 
 on:
   push:
@@ -8,21 +8,41 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Instalar Node.js
-        uses: actions/setup-node@v2
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
         with:
-          node-version: '18.16.0'
-        
-      - name: Update env cliente secret 1
+          java-version: "11"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "2.10.0"
+          channel: "stable"
+
+      - name: Install Flutter dependencies
         run: |
-          sed -i 's/#{GOOGLE_PRIVATE_KEY_ID}#/${{ secrets.GOOGLE_PRIVATE_KEY_ID }}/g' android/app/client_secret.json
-          sed -i 's/#{GOOGLE_PRIVATE_KEY}#/${{ secrets.GOOGLE_PRIVATE_KEY }}/g' android/app/client_secret.json
-          sed -i 's/#{GOOGLE_CLIENT_EMAIL}#/${{ secrets.GOOGLE_CLIENT_EMAIL }}/g' android/app/client_secret.json
-          sed -i 's/#{GOOGLE_CLIENT_ID}#/${{ secrets.GOOGLE_CLIENT_ID }}/g' android/app/client_secret.json
-          sed -i 's/#{GOOGLE_CERT_URL}#/${{ secrets.GOOGLE_CERT_URL }}/g' android/app/client_secret.json
-        
+          flutter pub get
+
+      - name: Build AAB
+        run: |
+          flutter build appbundle -t "lib/main_prod.dart" --release
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: app-release.aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Get Version
+        id: get_version
+        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
+
+      - name: Generate Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/bundle/release/*"
+          tag: v${{ steps.get_version.outputs.version }}
+          token: ${{ secrets.TOKEN }}
