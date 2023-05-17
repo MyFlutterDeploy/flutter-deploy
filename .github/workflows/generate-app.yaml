@@ -56,7 +56,3 @@ jobs:
           artifacts: "build/app/outputs/bundle/release/*"
           tag: v${{ steps.get_version.outputs.version }}
           token: ${{ secrets.TOKEN }}
-  
-          else
-            echo "No se encontró el elemento"
-          fi
