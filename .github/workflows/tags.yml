@@ -24,3 +24,6 @@ jobs:
             echo "Es un archivo"
           elif [ -d "ruta/al/elemento" ]; then
             echo "Es una carpeta"
+          else
+            echo "No se encontró el elemento"
+          fi
