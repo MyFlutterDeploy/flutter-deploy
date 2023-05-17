@@ -46,34 +46,17 @@ jobs:
             echo "No se encontró el elemento"
           fi
 
-      #- name: Get Version
-      #  id: get_version
-      #  run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
+      - name: Get Version
+        id: get_version
+        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
 
-      #- name: Generate Release
-      #  uses: ncipollo/release-action@v1
-      #  with:
-      #    artifacts: "build/app/outputs/bundle/release/*"
-      #    tag: v${{ steps.get_version.outputs.version }}
-      #    token: ${{ secrets.TOKEN }}
-  verify:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      - uses: actions/download-artifact@v3
+      - name: Generate Release
+        uses: ncipollo/release-action@v1
         with:
-          name: appbundle
-          path: build/app/outputs/bundle/release/
-          
-      - name: Verificar archivo o carpeta
-        run: |
-          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
-            echo "Es un archivo"
-          elif [ -d "ruta/al/elemento" ]; then
-            echo "Es una carpeta"
+          artifacts: "build/app/outputs/bundle/release/*"
+          tag: v${{ steps.get_version.outputs.version }}
+          token: ${{ secrets.TOKEN }}
+  
           else
             echo "No se encontró el elemento"
           fi
