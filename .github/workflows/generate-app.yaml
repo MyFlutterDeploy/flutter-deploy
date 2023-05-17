@@ -33,16 +33,46 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: app-release.aab
+          name: appbundle
           path: build/app/outputs/bundle/release/app-release.aab
+          
+      - name: Verificar archivo o carpeta
+        run: |
+          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
+            echo "Es un archivo"
+          elif [ -d "ruta/al/elemento" ]; then
+            echo "Es una carpeta"
+          else
+            echo "No se encontró el elemento"
+          fi
 
-      - name: Get Version
-        id: get_version
-        run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
+      #- name: Get Version
+      #  id: get_version
+      #  run: echo version="$(grep -m1 '^version:' pubspec.yaml | awk '{print $2}' | sed 's/[[:space:]]//g')" >> $GITHUB_OUTPUT
 
-      - name: Generate Release
-        uses: ncipollo/release-action@v1
+      #- name: Generate Release
+      #  uses: ncipollo/release-action@v1
+      #  with:
+      #    artifacts: "build/app/outputs/bundle/release/*"
+      #    tag: v${{ steps.get_version.outputs.version }}
+      #    token: ${{ secrets.TOKEN }}
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - uses: actions/upload-artifact@v3
         with:
-          artifacts: "build/app/outputs/bundle/release/*"
-          tag: v${{ steps.get_version.outputs.version }}
-          token: ${{ secrets.TOKEN }}
+          name: appbundle
+          path: build/app/outputs/bundle/release/app-release.aab
+          
+      - name: Verificar archivo o carpeta
+        run: |
+          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
+            echo "Es un archivo"
+          elif [ -d "ruta/al/elemento" ]; then
+            echo "Es una carpeta"
+          else
+            echo "No se encontró el elemento"
+          fi
