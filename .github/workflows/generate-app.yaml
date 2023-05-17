@@ -66,11 +66,11 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: appbundle
-          path: build/app/outputs/bundle/release/app-release.aab
+          path: ~/build/app/outputs/bundle/release
           
       - name: Verificar archivo o carpeta
         run: |
-          if [ -f "/home/runner/work/flutter-deploy/flutter-deploy/build/app/outputs/bundle/release/app-release.aab" ]; then
+          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
             echo "Es un archivo"
           elif [ -d "ruta/al/elemento" ]; then
             echo "Es una carpeta"
