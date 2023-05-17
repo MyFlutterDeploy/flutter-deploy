@@ -70,7 +70,7 @@ jobs:
           
       - name: Verificar archivo o carpeta
         run: |
-          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
+          if [ -f "/home/runner/work/flutter-deploy/flutter-deploy/build/app/outputs/bundle/release/app-release.aab" ]; then
             echo "Es un archivo"
           elif [ -d "ruta/al/elemento" ]; then
             echo "Es una carpeta"
